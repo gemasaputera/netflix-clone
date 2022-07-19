@@ -1,12 +1,15 @@
-import type { GetServerSideProps } from "next";
-import Head from "next/head";
-import { useState } from "react";
-import Banner from "../components/Banner";
-import Header from "../components/Header";
-import Row from "../components/Row";
-import { Movie } from "../typings";
-import requests from "../utils/request";
-import useAuth from "../hooks/useAuth";
+import type { GetServerSideProps } from 'next';
+import Head from 'next/head';
+import { useState } from 'react';
+import Banner from '../components/Banner';
+import Header from '../components/Header';
+import Row from '../components/Row';
+import { Movie } from '../typings';
+import requests from '../utils/request';
+import useAuth from '../hooks/useAuth';
+import { useRecoilValue } from 'recoil';
+import { modalState } from '../atoms/modalAtom';
+import Modal from '../components/Modal';
 
 interface Props {
   netflixOriginals: Movie[];
@@ -30,6 +33,7 @@ const Home = ({
   romanceMovies,
 }: Props) => {
   const [list, setList] = useState<Movie[]>([]);
+  const showModal = useRecoilValue(modalState);
   const { logout, loading } = useAuth();
 
   if (loading) return null;
@@ -54,6 +58,8 @@ const Home = ({
           <Row title="Documentaries" movies={documentaries} />
         </section>
       </main>
+      {/* Modal */}
+      {showModal && <Modal />}
     </div>
   );
 };
